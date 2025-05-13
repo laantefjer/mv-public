@@ -624,6 +624,284 @@
                 ],
                 answer: "Restore",
                 explanation: "If the configuration database is corrupted, the \"Restore\" configuration restore mode should be used to recover the data from a previous configuration backup. This process rebuilds the configuration database from the backup file. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "A backup administrator is called in to review a new Veeam deployment created by a coworker. The backup administrator takes the following notes: * 12 backup jobs * 1 SOBR configured with AWS S3 Performance Tier * 1 Repository configured on Hardened Immutable Repository The administrator also notes that six jobs are configured to use the SOBR and six jobs are configured to use the Hardened Immutable Repository. What should the backup administrator report to the other coworker regarding the 3-2-1 backup strategy?",
+                options: [
+                    "This will save costs with the Archive Tier in the SOBR.",
+                    "This needs the Hardened Immutable Repository added to the capacity tier.",
+                    "This only has 1 copy of the backup data.",
+                    "This meets the 3-2-1 best practices requirements."
+                ],
+                answer: "This only has 1 copy of the backup data.",
+                explanation: "The 3-2-1 backup strategy requires three copies of data, two local on different media/devices, and one offsite. The scenario describes one local copy (Hardened Immutable Repository) and one offsite component (SOBR with AWS S3). It lacks a second local copy on different media, thus only having 1 copy of the backup data locally does not meet the 3-2-1 best practices. Reference: Veeam Backup & Replication Best Practices Guide"
+            },
+            {
+                question: "A company's infrastructure includes a Fibre Channel SAN where the VMware VMs are located. The administrator wants to create a backup that minimizes the impact on the production environment. What proxy transport mode should be used?",
+                options: [
+                    "Network",
+                    "Guest interaction",
+                    "Direct storage access",
+                    "Virtual appliance"
+                ],
+                answer: "Direct storage access",
+                explanation: "For a VMware environment on a Fibre Channel SAN, the most efficient proxy transport mode to minimize impact on the production environment is Direct Storage Access. This mode allows the backup proxy to directly interact with the SAN, bypassing the production network and reducing load on the ESXi hosts. Reference: Veeam Backup & Replication Best Practices, Veeam VMware Backup Proxy Guide"
+            },
+            {
+                question: "Which Veeam replication failover function ensures that changes made during a failover are copied to the original production VM?",
+                options: [
+                    "Fallback",
+                    "Permanent failover",
+                    "Undo failover",
+                    "Undo fallback"
+                ],
+                answer: "Fallback",
+                explanation: "In Veeam replication, the function that ensures changes made during a failover are copied back to the original production VM is Fallback. This process involves reversing the replication direction after a failover, ensuring that any changes made while running on the replica are synchronized back to the original VM. Reference: Veeam Backup & Replication User Guide, Veeam Replication Fallback Guide"
+            },
+            {
+                question: "An infrastructure with 50 VMs has a power outage. After the VMware cluster has booted up again, 10 large VMs are orphaned. However, all VM disk files are still on the datastores. What is the quickest way to bring back those VMs with the least possible data loss?",
+                options: [
+                    "Remove the existing VM disk files from the datastore and perform Instant VM Recovery",
+                    "Perform Instant VM Recovery with quick rollback with automatic Power On VM at the end.",
+                    "Perform Restore VM Files and only restore the VM configuration files.",
+                    "Use the 'Restore guest files' option to restore the VM configuration files."
+                ],
+                answer: "Perform Restore VM Files and only restore the VM configuration files.",
+                explanation: "When VMs are orphaned but disk files are intact, restoring only the VM configuration files (like VMX for VMware) is the quickest way to bring them back online with minimal data loss, as it re-registers the VMs with the hypervisor without transferring large disk files. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "A physical Linux server protected by a centrally managed Veeam agent is physically damaged. A VMware vSphere infrastructure is available, and the physical server is eligible for virtualization. Which recovery step provides the lowest possible RTO?",
+                options: [
+                    "Use Instant VM Recovery to VMware",
+                    "Use Export Disk Content as Virtual Disk to create a new VM.",
+                    "Use Bare Metal Restore to VMware vSphere VM.",
+                    "Use Instant Disk Recovery to VMware vSphere."
+                ],
+                answer: "Use Instant VM Recovery to VMware",
+                explanation: "Instant VM Recovery to VMware offers the lowest possible RTO for restoring a physically damaged Linux server to a VMware vSphere infrastructure by running the server directly from the backup file as a VM. Reference: Veeam Backup & Replication User Guide, Veeam Agent for Linux Guide"
+            },
+            {
+                question: "Management asks a backup administrator to deploy the Veeam Agent on a number of Amazon EC2 instances running Windows and Linux operating systems. A Veeam Protection Group is also required by management. The Veeam Distribution Server does not have network access to these instances. What protection group type should be used to select these objects?",
+                options: [
+                    "Individual computers",
+                    "Microsoft Active Directory objects",
+                    "Computers listed in a CSV file",
+                    "Cloud machines"
+                ],
+                answer: "Cloud machines",
+                explanation: "For deploying Veeam Agent on cloud instances like Amazon EC2 without direct network access from the distribution server, the 'Cloud machines' protection group type is designed for remote deployment and management of agents on cloud workloads. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "A 3-node Microsoft SQL Always On cluster is running in a VMware environment. The RPOs are: * 1 day for the cluster nodes * 15 minutes for the log files How should the cluster be backed up?",
+                options: [
+                    "Veeam Backup and Replication - Create a VMware backup job, include the 3 nodes of the cluster. Use Application-Aware Processing to back up the transaction logs every 15 minutes.",
+                    "Veeam Agent for Windows - Create a managed by server backup job for all 3 nodes. Use Application-Aware Processing to back up the database once a day.",
+                    "Veeam Agent for Windows - Create a managed by agent backup policy for all 3 nodes. Use a log shipping server to back up the transaction logs every 15 minutes.",
+                    "Veeam Enterprise Plug-in for Microsoft SQL - Install the Plug-in on each node in cluster. Use Microsoft SQL Server Management Studio to create the backups."
+                ],
+                answer: "Veeam Backup and Replication - Create a VMware backup job, include the 3 nodes of the cluster. Use Application-Aware Processing to back up the transaction logs every 15 minutes.",
+                explanation: "To meet the RPOs for both the SQL cluster nodes (1 day) and transaction logs (15 minutes), a VMware backup job with Application-Aware Processing enabled to back up transaction logs periodically (every 15 minutes) is the appropriate approach. Reference: Veeam Backup & Replication User Guide, Veeam Application-Aware Processing Guide"
+            },
+            {
+                question: "A daily backup job for seven Hyper-V VMs has been configured at the main site, keeping 14 days' worth of backup files. They want to get a copy of the VM backups to a repository at the disaster recovery site. They want to keep six months' worth of backup files at the disaster recovery site. They also need to be able to restore the VMs to any given day within two months and any given week within the six months. How should a backup copy job be configured to meet these requirements?",
+                options: [
+                    "Use periodic copy (pruning) mode, keeping 62 days of retention and six monthly GFS restore points.",
+                    "Use immediate copy (mirroring) mode, keeping 180 days of retention.",
+                    "Use periodic copy (pruning) mode, keeping 180 days of retention.",
+                    "Use immediate copy (mirroring) mode, keeping 62 days of retention and 26 weekly GFS restore points."
+                ],
+                answer: "Use immediate copy (mirroring) mode, keeping 62 days of retention and 26 weekly GFS restore points.",
+                explanation: "To meet the requirements of daily restore points for two months (62 days) and weekly restore points for six months (26 weeks), the immediate copy mode with 62 days retention and 26 weekly GFS restore points is the correct configuration. Immediate copy ensures backups are copied promptly, and GFS handles the long-term weekly retention. Reference: Veeam Backup & Replication User Guide, Veeam GFS Retention Policy Explanation"
+            },
+            {
+                question: "There is a company-wide mandate to migrate operations off corporate datacenters and over to AWS, Azure, and GCE. The Veeam engineer has backups of VMware, Hyper-V, and Nutanix VMs stored in on-premises repositories. The performance of a test restore was not satisfactory. Which solution should the engineer deploy?",
+                options: [
+                    "Caching servers on premises and in the cloud",
+                    "Veeam Wan Accelerators on premises and in the clouds",
+                    "Upgraded bandwidth to the Internet",
+                    "Helper appliance in the cloud"
+                ],
+                answer: "Veeam Wan Accelerators on premises and in the clouds",
+                explanation: "To improve the performance of test restores from on-premises repositories to cloud environments, deploying Veeam WAN Accelerators on premises and in the cloud is recommended. WAN Accelerators optimize data transfer over the network, reducing the amount of data that needs to be transferred and thereby improving restore performance. Reference: Veeam Backup & Replication User Guide, Veeam WAN Accelerator Guide"
+            },
+            {
+                question: "A Veeam proxy server is configured as follows. No modifications are allowed to the transport mode. When performing a restore of a VMware virtual disk using this proxy server, the restore fails. What is a possible cause?",
+                options: [
+                    "CBT is enabled on the virtual disk.",
+                    "CBT is disabled on the virtual disk.",
+                    "The virtual disk is thin-provisioned.",
+                    "The virtual disk is thick-provisioned"
+                ],
+                answer: "The virtual disk is thin-provisioned.",
+                explanation: "Given the transport modes and no modifications allowed, a possible cause for restore failure of a VMware virtual disk could be that the virtual disk is thin-provisioned, and the selected transport mode (Direct Storage Access or Virtual Appliance) might not be compatible with thin-provisioned disks depending on the storage configuration and VM state. Reference: Veeam Backup & Replication User Guide, Veeam VMware Backup Proxy Guide"
+            },
+            {
+                question: "The configuration database is corrupted, and the backup administrator wants to recover the data. Which configuration restore mode should be used?",
+                options: [
+                    "Instant Recovery",
+                    "Restore",
+                    "Failover",
+                    "Migrate"
+                ],
+                answer: "Restore",
+                explanation: "If the Veeam Backup & Replication configuration database is corrupted, the 'Restore' option should be used to recover the data from a configuration backup. This process restores the database from a backup file. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "What is the primary benefit of configuring replica mapping?",
+                options: [
+                    "Compressed WAN traffic",
+                    "Deduplicated WAN traffic",
+                    "Reduced WAN traffic",
+                    "Encrypted WAN traffic"
+                ],
+                answer: "Reduced WAN traffic",
+                explanation: "The primary benefit of configuring replica mapping in Veeam Backup & Replication is Reduced WAN traffic. Replica mapping allows an administrator to map an existing VM in the disaster recovery site to a replica job, avoiding the need to transfer the entire VM over the WAN again and instead only synchronizing the differences. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "Why is it recommended to have at least one backup proxy server in each site when defining a replica job?",
+                options: [
+                    "The proxies allow replication automatic restart after failure.",
+                    "The proxies allow for no VM snapshots during transit.",
+                    "It allows deduplication during data transit across the WAN",
+                    "The proxies allow automatic WAN acceleration.",
+                    "The proxies enable a stable connection for VM data transfer across sites.",
+                    "It allows for no VM snapshots"
+                ],
+                answer: "The proxies enable a stable connection for VM data transfer across sites.",
+                explanation: "Having backup proxy servers in each site when defining a replica job is recommended because they handle data processing and transfer, ensuring a stable connection for VM data transfer across sites. They manage compression, deduplication, and transfer processes, making replication more resilient and reliable. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "What is the purpose of a Cache Repository when adding the file share?",
+                options: [
+                    "To walk the file shares and move data to the backup repository",
+                    "To control how fast the backup proxy can read data from the source file share",
+                    "To make sure backup retention is being managed correctly",
+                    "To store temporary metadata and track all objects that have changed"
+                ],
+                answer: "To store temporary metadata and track all objects that have changed",
+                explanation: "The Cache Repository stores metadata about the file share, including change logs, which is crucial for efficient incremental backups by tracking changes since the last backup. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "An administrator is asked to change a backup copy job from periodic mode to immediate mode. How can this be accomplished?",
+                options: [
+                    "Enable immediate in the backup copy job settings drop down.",
+                    "Right click on the job name and choose immediate.",
+                    "Copy the original backup copy job to a different folder and remap the job.",
+                    "Create a new backup copy job and delete the original job."
+                ],
+                answer: "Create a new backup copy job and delete the original job.",
+                explanation: "Veeam Backup & Replication does not allow changing the mode of an existing backup copy job. The recommended approach is to create a new job with the desired mode (immediate) and then delete the old one. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "What SureBackup feature should be configured to identify the necessary VMs for an on-demand lab from backup files for several mission critical VMs?",
+                options: [
+                    "Application Group",
+                    "Virtual Lab",
+                    "Staged Restore",
+                    "Secure Restore"
+                ],
+                answer: "Application Group",
+                explanation: "An Application Group in SureBackup allows you to define a group of interdependent VMs (like mission-critical applications) that should be started together in a specific order within the isolated Virtual Lab environment for verification and testing. Reference: Veeam Backup & Replication User Guide"
+            },
+             {
+                question: "A mid-sized company uses Veeam Backup and Replication to safeguard their business-critical data from ransomware attacks. The company needs to validate backups and increase security, while improving DevOps efficiency. How can a SureBackup Job be utilized to address the company's specific needs?",
+                options: [
+                    "Helps improve the data deduplication and compression ratios",
+                    "Validates backup data and ensures backups are ransomware-free",
+                    "Creates a secure, isolated environment to test new applications",
+                    "Improves recovery speed reducing RTO"
+                ],
+                answer: "Creates a secure, isolated environment to test new applications",
+                explanation: "A SureBackup Job can be used to create a secure, isolated environment (Virtual Lab) where you can test applications, patches, or updates from your backups without affecting the production environment. This helps validate backups and can be used for testing, contributing to improved DevOps efficiency. Reference: Veeam Backup & Replication User Guide, Veeam SureBackup Guide"
+            },
+             {
+                question: "An engineer needs to test the impact of operating system updates on app functionality in an isolated non-production environment. What Veeam Backup and Replication feature can be used to facilitate this?",
+                options: [
+                    "Replication",
+                    "Direct Storage Snapshots",
+                    "Virtual Labs",
+                    "Instant Recovery"
+                ],
+                answer: "Virtual Labs",
+                explanation: "Virtual Labs is the ideal feature for testing the impact of operating system updates in an isolated environment. Virtual Labs allow you to create a secure, isolated copy of your production environment where you can test updates, patches, and other changes without affecting the live environment. Reference: Veeam Backup & Replication Documentation, Veeam Virtual Lab Guide"
+            },
+             {
+                question: "A customer has a physical windows server running Microsoft SQL 2020. Which component should be used to protect the whole server?",
+                options: [
+                    "Veeam Agent",
+                    "Veeam Plug-in for Enterprise Application",
+                    "Veeam Backup Proxy",
+                    "Cache Repository"
+                ],
+                answer: "Veeam Agent",
+                explanation: "To protect a physical Windows server running Microsoft SQL 2020, the Veeam Agent should be used. Veeam Agent is designed to provide comprehensive backup and recovery for physical servers, including those running critical applications like Microsoft SQL Server. Reference: Veeam Agent for Windows User Guide, Veeam Physical Server Backup Guide"
+            },
+             {
+                question: "A Veeam administrator wants to diagnose known issues in the configuration and performance of backup infrastructure without involving Veeam Technical Support. What feature of Veeam One should the administrator use?",
+                options: [
+                    "Intelligent Diagnostics",
+                    "Log Shipping Servers",
+                    "Business View",
+                    "Best Practices Analyzer"
+                ],
+                answer: "Intelligent Diagnostics",
+                explanation: "For diagnosing known issues in the configuration and performance of the backup infrastructure without the direct involvement of Veeam Technical Support, the administrator should utilize Intelligent Diagnostics in Veeam One. Intelligent Diagnostics is a feature designed to proactively detect known issues within the Veeam backup infrastructure by analyzing the system's event logs, performance data, and configurations. Reference: Veeam ONE User Guide"
+            },
+            {
+                question: "In Veeam Enterprise Manager, what granular restoration permission can be set for the Restore Operator role?",
+                options: [
+                    "Microsoft OneDrive files.",
+                    "Microsoft Exchange items",
+                    "Microsoft Teams channels",
+                    "Microsoft SharePoint documents"
+                ],
+                answer: "Microsoft Exchange items",
+                explanation: "For the Restore Operator role in Veeam Enterprise Manager, granular restoration permissions can be set for various items, including Microsoft Exchange items. This allows the Restore Operator to perform self-service restores of Exchange data within their defined scope. Reference: Veeam Enterprise Manager User Guide"
+            },
+            {
+                question: "Which of the following are valid export options for Microsoft SQL Server items when using the Veeam Explorer for Microsoft SQL? (Choose two.)",
+                options: [
+                    ".mdb file",
+                    ".bak file",
+                    ".mdf file",
+                    ".sql file",
+                    ".xls file"
+                ],
+                answer: [".bak file", ".mdf file"],
+                explanation: "When using Veeam Explorer for Microsoft SQL, valid export options for SQL Server items include exporting as a .bak file (SQL Server backup file) or as a .mdf file (SQL Server database file). These formats allow for restoring or attaching the database using SQL Server tools. Reference: Veeam Explorer for Microsoft SQL User Guide"
+            },
+            {
+                question: "Veeam Backup & Replication is currently configured to back up different workloads: Windows VMs on vSphere and Linux VMs on vSphere. A secondary copy of all the backups including transaction logs must be created. Which of the following backup copy job configurations is the simplest?",
+                options: [
+                    "A single \"periodic copy\" backup copy job",
+                    "A single \"immediate copy\" backup copy job",
+                    "Two \"immediate copy\" backup copy jobs",
+                    "Two \"periodic copy\" backup copy jobs"
+                ],
+                answer: "A single \"immediate copy\" backup copy job",
+                explanation: "To create a secondary copy of all backups, including transaction logs, for different workloads (Windows and Linux VMs), a single \"immediate copy\" backup copy job is the simplest configuration. Immediate copy mode ensures that backup copies are created as soon as restore points appear, and it supports copying transaction logs. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "A backup administrator decided to move the Veeam Backup & Replication server and configuration database to new servers. Which configuration restore mode should be used?",
+                options: [
+                    "Migrate",
+                    "Planned failover",
+                    "Restore",
+                    "Failover plan"
+                ],
+                answer: "Migrate",
+                explanation: "When moving the Veeam Backup & Replication server and configuration database to new servers, the \"Migrate\" configuration restore mode should be used. This mode is specifically designed for relocating the Veeam infrastructure components while preserving the configuration. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "The configuration database is corrupted, and the backup administrator wants to recover the data. Which configuration restore mode should be used?",
+                options: [
+                    "Instant Recovery",
+                    "Restore",
+                    "Failover",
+                    "Migrate"
+                ],
+                answer: "Restore",
+                explanation: "If the configuration database is corrupted, the \"Restore\" configuration restore mode should be used to recover the data from a previous configuration backup. This process rebuilds the configuration database from the backup file. Reference: Veeam Backup & Replication User Guide"
             }
         ];
 
