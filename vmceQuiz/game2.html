@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VeeamQuest: Path of the Data Defender</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1e1e2f;
+      color: #f5f5f5;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #00e676;
+    }
+    .question {
+      background: #2c2c3e;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .options button {
+      background: #444;
+      color: white;
+      padding: 10px 15px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+    .options button:hover {
+      background: #00e676;
+      color: black;
+    }
+    .feedback {
+      margin-top: 10px;
+    }
+    .next {
+      margin-top: 20px;
+      display: none;
+      background: #00e676;
+      color: black;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛡️ VeeamQuest: Path of the Data Defender 🛡️</h1>
+  <h2 id="stage">Realm 1: The Broken Repository</h2>
+  <div class="question">
+    <p id="question-text">A Veeam engineer has backups on-prem and wants to restore them to AWS/Azure/GCE. The test restore is slow. What improves performance?</p>
+    <div class="options">
+      <button onclick="checkAnswer('A')">A. Caching servers</button>
+      <button onclick="checkAnswer('B')">B. Veeam WAN Accelerators</button>
+      <button onclick="checkAnswer('C')">C. Upgraded bandwidth</button>
+      <button onclick="checkAnswer('D')">D. Helper appliance</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next" id="nextBtn" onclick="nextQuestion()">Next ➡️</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        stage: "Realm 1: The Broken Repository",
+        question: "A Veeam engineer has backups on-prem and wants to restore them to AWS/Azure/GCE. The test restore is slow. What improves performance?",
+        options: ["Caching servers", "Veeam WAN Accelerators", "Upgraded bandwidth", "Helper appliance"],
+        correct: "B",
+        explanation: "Veeam WAN Accelerators optimize data transfer and significantly improve restore speeds over long distances."
+      },
+      {
+        stage: "Realm 2: The Snapshot Curse",
+        question: "A SQL VM can only be snapshotted once daily at 3 AM, but the RPO is 1 hour. Which settings help meet the RPO?",
+        options: [
+          "SQL: Back up logs periodically",
+          "SQL: Do not truncate logs",
+          "VSS: Perform copy only",
+          "SQL: Truncate Logs",
+          "VSS: Process transaction logs with this job"
+        ],
+        correct: ["A", "E"],
+        explanation: "Periodic log backups (A) and enabling log processing (E) ensure RPO compliance without needing full VM snapshots."
+      }
+    ];
+
+    let currentQuestion = 0;
+    let answered = false;
+
+    function checkAnswer(choice) {
+      const feedback = document.getElementById("feedback");
+      const nextBtn = document.getElementById("nextBtn");
+
+      if (answered) return;
+      answered = true;
+
+      const q = questions[currentQuestion];
+      const isCorrect = Array.isArray(q.correct)
+        ? q.correct.includes(choice)
+        : q.correct === choice;
+
+      if (isCorrect) {
+        feedback.innerHTML = `<p style='color:#00e676;'>✅ Correct! ${q.explanation}</p>`;
+      } else {
+        feedback.innerHTML = `<p style='color:#ff5252;'>❌ Incorrect. ${q.explanation}</p>`;
+      }
+      nextBtn.style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion >= questions.length) {
+        document.body.innerHTML = "<h1>🎉 You’ve restored the Temple of Backup! 🎉</h1><p>You have completed the VeeamQuest. Glory and certification await you!</p>";
+        return;
+      }
+
+      const q = questions[currentQuestion];
+      document.getElementById("stage").innerText = q.stage;
+      document.getElementById("question-text").innerText = q.question;
+      const optionsDiv = document.querySelector(".options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const letter = String.fromCharCode(65 + i);
+        const btn = document.createElement("button");
+        btn.textContent = `${letter}. ${opt}`;
+        btn.onclick = () => checkAnswer(letter);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("feedback").innerHTML = "";
+      document.getElementById("nextBtn").style.display = "none";
+      answered = false;
+    }
+  </script>
+</body>
+</html>
