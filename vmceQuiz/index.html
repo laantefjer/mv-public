@@ -166,9 +166,9 @@
     </div>
 
     <script>
-        // Array of questions, answers, and explanations
-        const questions = [
-            {
+        // Array of questions, answers, and explanations extracted from PDFs
+        let allQuestions = [
+             {
                 question: "Which API is available to automate Veeam Backup and Replication operations?",
                 options: [
                     "REST API through Veeam One server",
@@ -177,10 +177,55 @@
                     "Powershell cmdlets through Veeam Enterprise Manager Server"
                 ],
                 answer: "REST API through Veeam Backup and Replication Server",
-                explanation: "The REST API through Veeam Backup and Replication Server is the available API for automating Veeam Backup and Replication operations. This API enables programmatic control over Veeam Backup & Replication and allows for integration with external systems and custom automation scripts."
+                explanation: "The REST API through Veeam Backup and Replication Server is the available API for automating Veeam Backup and Replication operations. This API enables programmatic control over Veeam Backup & Replication and allows for integration with external systems and custom automation scripts. Reference: Veeam Backup & Replication RESTful API Reference, Veeam Automation and Scripting Guide"
             },
             {
-                question: "After using Instant VM Recovery to bring a critical crashed server back online quickly, what else is required to complete the recovery?",
+                question: "An administrator needs to create a strategy in advance of a disaster to ensure that applications can be started in a specific order. How can this be accomplished?",
+                options: [
+                    "Attach XML file to existing job with the VM start order",
+                    "Application group",
+                    "Failover plan",
+                    "Veeam ONE migration script"
+                ],
+                answer: "Failover plan",
+                explanation: "To ensure that applications can be started in a specific order in advance of a disaster, an administrator should use a Failover Plan in Veeam Backup and Replication. This feature allows for the creation of a predefined sequence for starting up VMs, ensuring that applications are brought online in the correct order during a disaster recovery scenario. Reference: Veeam Backup & Replication User Guide, Veeam Failover Plan Configuration Guide"
+            },
+             {
+                question: "A Microsoft SQL server is running in a VMware VM. The VM is very sensitive to snapshots, and can only be snapshotted once per day at 3 AM. However, the RPO for the databases running inside the VM is 1 hour. Which two Application-Aware Processing Settings should be selected in the backup job so that the 1 hour RPO for the databases is met? (Choose two.)",
+                options: [
+                    "SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Back up logs periodically",
+                    "SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Do not truncate logs",
+                    "General Tab: VSS Settings: Perform copy only",
+                    "SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Truncate Logs",
+                    "General Tab: VSS Settings: Process transaction logs with this job"
+                ],
+                answer: ["SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Back up logs periodically", "General Tab: VSS Settings: Process transaction logs with this job"],
+                explanation: "To meet the 1-hour RPO for the databases within the VM, while only being able to snapshot the VM once per day, the best strategy is to enable regular transaction log backups (option A) and process transaction logs with the job (option E). This setup allows the system to capture changes in the SQL Server transaction logs at intervals less than the RPO requirement, without needing to snapshot the entire VM more frequently. Reference: Veeam Backup & Replication Documentation, Veeam Backup & Replication Best Practices Guide"
+            },
+            {
+                question: "To be able to increase backup retention, the company has bought a Data Domain deduplication appliance. After setting up the jobs to use it, the backup administrator observes an increase of resource consumption on the backup server. The proxy configuration has not been modified. What is causing the issue?",
+                options: [
+                    "The backup appliance does not have enough resources to process the data.",
+                    "The SSL certificate on the backup appliance needs to be updated.",
+                    "The backup server has to fulfill the gateway role.",
+                    "The backup server needs additional resources to use a deduplication appliance."
+                ],
+                answer: "The backup server has to fulfill the gateway role.",
+                explanation: "When integrating a Data Domain deduplication appliance, the backup server may need to take on the gateway role, especially if integrated over NFS or CIFS. This additional workload can increase resource consumption on the backup server if it's not well-resourced."
+            },
+            {
+                question: "To solve a space issue while enabling GFS retention, after adding the repository to Scale-Out-Backup Repository (SOBR) as Performance Tier, which option should the engineer choose to solve this issue?",
+                options: [
+                    "Add an Object Storage as Capacity tier and set the policy to copy backups to object storage as soon as they are created",
+                    "Add another NAS repository as Capacity tier and set the policy to move backups older than 14 days",
+                    "Add an Object Storage as Archive tier and set the policy to move all GFS backups",
+                    "Add an Object Storage as Capacity tier and set the policy to move backups older than 14 days"
+                ],
+                answer: "Add an Object Storage as Capacity tier and set the policy to move backups older than 14 days",
+                explanation: "Adding Object Storage as a Capacity tier to the SOBR and setting the policy to move backups older than 14 days allows for efficient use of local storage for short-term retention and leverages object storage for long-term archival (GFS) purposes."
+            },
+            {
+                question: "The administrator of a VMware environment backed up by Veeam Backup & Replication has a critical server that has crashed and will not reboot. They were able to bring it back online quickly using Instant VM Recovery so people could continue to work. What else is required to complete the recovery?",
                 options: [
                     "Migrate to production",
                     "Commit failover",
@@ -188,42 +233,20 @@
                     "Merge delta file"
                 ],
                 answer: "Migrate to production",
-                explanation: "After using Instant VM Recovery, the final step is to Migrate to production. Instant VM Recovery runs the VM directly from the backup file temporarily. Migrating it back to production storage ensures long-term stability and performance."
-            },
-             {
-                question: "Why is it recommended to install Veeam ONE before Veeam Backup & Replication?",
-                options: [
-                    "Veeam ONE stores the license file necessary for Veeam Backup & Replication.",
-                    "Veeam ONE can verify that the server meets the minimum requirements to install Veeam Backup & Replication.",
-                    "Veeam ONE is a prerequisite for Veeam Backup & Replication installation.",
-                    "Veeam ONE can potentially identify infrastructure issues prior to performing a backup."
-                ],
-                answer: "Veeam ONE can potentially identify infrastructure issues prior to performing a backup.",
-                explanation: "Installing Veeam ONE first allows it to identify potential infrastructure issues that could impact backup operations, ensuring the environment is optimized before deploying Veeam Backup & Replication."
+                explanation: "After using Instant VM Recovery, the final step is to Migrate to production. Instant VM Recovery runs the VM directly from the backup file temporarily. Migrating it back to production storage ensures long-term stability and performance. Reference: Veeam Backup & Replication User Guide"
             },
             {
-                question: "A backup administrator reviews a new deployment with 12 backup jobs, 1 SOBR with AWS S3 Performance Tier, and 1 Hardened Immutable Repository. Six jobs use the SOBR, and six use the Hardened Immutable Repository. What should the administrator report regarding the 3-2-1 backup strategy?",
+                question: "An administrator needs to configure a backup job that dynamically adds new VMware hosted SQL servers. How can this be accomplished?",
                 options: [
-                    "This will save costs with the Archive Tier in the SOBR.",
-                    "This needs the Hardened Immutable Repository added to the capacity tier.",
-                    "This only has 1 copy of the backup data.",
-                    "This meets the 3-2-1 best practices requirements."
+                    "Create a job based on vSphere tags.",
+                    "Enable application aware processing.",
+                    "Create a CSV file that is scanned before the backup job starts.",
+                    "Create a dynamic backup job in Enterprise Manager."
                 ],
-                answer: "This only has 1 copy of the backup data.",
-                explanation: "The 3-2-1 strategy requires three copies of data, two local on different media/devices, and one offsite. The scenario describes one local copy (Hardened Immutable Repository) and one offsite component (SOBR with AWS S3). It lacks a second local copy on different media, thus only having 1 copy of the backup data locally does not meet the 3-2-1 best practices."
+                answer: "Create a job based on vSphere tags.",
+                explanation: "Creating a backup job based on vSphere tags allows for dynamic inclusion of new VMs tagged appropriately, ensuring they are automatically backed up without manual intervention. Reference: Veeam Backup & Replication User Guide, Veeam Dynamic Backup Job Configuration Guide"
             },
             {
-                question: "What SureBackup feature should be configured to identify the necessary VMs for an on-demand lab from backup files for several mission critical VMs?",
-                options: [
-                    "Application Group",
-                    "Virtual Lab",
-                    "Staged Restore",
-                    "Secure Restore"
-                ],
-                answer: "Application Group",
-                explanation: "An Application Group in SureBackup allows you to define a group of interdependent VMs (like mission-critical applications) that should be started together in a specific order within the isolated Virtual Lab environment for verification and testing."
-            },
-             {
                 question: "A physical Windows server protected by a centrally managed Veeam agent is physically damaged. A Hyper-V infrastructure is available, and the physical server is eligible for virtualization. Which recovery step provides the lowest possible RTO?",
                 options: [
                     "Use Instant VM Recovery to Hyper-V.",
@@ -232,62 +255,219 @@
                     "Use Export Disk Content as Virtual Disk to create a new VM."
                 ],
                 answer: "Use Instant VM Recovery to Hyper-V.",
-                explanation: "Instant VM Recovery to Hyper-V allows the damaged physical server's backup to be run as a VM in the Hyper-V environment almost immediately, providing the lowest Recovery Time Objective (RTO)."
+                explanation: "Instant VM Recovery to Hyper-V allows the damaged physical server's backup to be run as a VM in the Hyper-V environment almost immediately, providing the lowest Recovery Time Objective (RTO). Reference: Veeam Agent for Microsoft Windows supports Instant Recovery to a Hyper-V VM."
             },
              {
-                question: "A Microsoft SQL server in a VMware VM is sensitive to snapshots (only once per day at 3 AM). The RPO for databases is 1 hour. Which two Application-Aware Processing Settings should be selected in the backup job to meet the 1-hour RPO? (Choose two.)",
+                question: "Which two service offerings can a Veeam Cloud Service Provider provide to Veeam's customers? (Choose two.)",
                 options: [
-                    "SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Back up logs periodically",
-                    "SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Do not truncate logs",
-                    "General Tab: VSS Settings: Perform copy only",
-                    "SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Truncate Logs",
-                    "General Tab: VSS Settings: Process transaction logs with this job"
+                    "Backup as a Service",
+                    "Application Development as a Service",
+                    "On premise tape",
+                    "Physical site security as a Service",
+                    "Disaster Recovery as a Service"
                 ],
-                 // Note: The original document lists A and E as correct. We need to handle multiple correct answers for this question type.
-                answer: ["SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Back up logs periodically", "General Tab: VSS Settings: Process transaction logs with this job"],
-                explanation: "To meet the 1-hour RPO without frequent VM snapshots, enable periodic transaction log backups (Option A) and process transaction logs with the job (Option E). This captures changes more frequently than the daily snapshot."
+                answer: ["Backup as a Service", "Disaster Recovery as a Service"],
+                explanation: "Veeam Cloud Service Providers (VCSPs) offer Backup as a Service (BaaS) and Disaster Recovery as a Service (DRaaS) to extend Veeam's data protection capabilities to the cloud, providing flexible and reliable solutions for customers."
+            },
+            {
+                question: "A company is running nightly backups to satisfy their 24-hour RPO. There are two critical applications that cannot be offline more than 4 hours with no more than an hour of data loss. How can this be accomplished?",
+                options: [
+                    "Linux hardened repository with immutability",
+                    "A local SOBR with AWS Object storage",
+                    "Backup copy jobs with hourly VM replication",
+                    "Enable Continuous Backup Replication"
+                ],
+                answer: "Backup copy jobs with hourly VM replication",
+                explanation: "To meet a stringent RTO of 4 hours and RPO of 1 hour, a combination of backup copy jobs (for offsite backups) and hourly VM replication is most suitable. Replication allows rapid failover to a replica VM, minimizing downtime and data loss. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "What does Veeam's Secure Restore functionality ensure during restores?",
+                options: [
+                    "Proper rights/permissions on files and folders",
+                    "Custom ports for in-flight data",
+                    "256-bit AES encryption of in-flight data",
+                    "Anti-virus scanning"
+                ],
+                answer: "Anti-virus scanning",
+                explanation: "Veeam's Secure Restore integrates with antivirus software to scan data being restored for malware and other threats before it's brought back into the production environment, enhancing security. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "A software development company has deployed the Veeam Data Platform. Recently, developers have been making increasingly frequent requests to have files restored from their VMware VMs. What can be done to reduce strain on the backup team?",
+                options: [
+                    "Give developers access to the Veeam Plug-in for VMware vSphere Client",
+                    "Give developers access to Veeam One Business View",
+                    "Give the developers access to the Enterprise Manager Self-Service File Restore Portal",
+                    "Outsource developer restore requests to a Managed Service Provider"
+                ],
+                answer: "Give the developers access to the Enterprise Manager Self-Service File Restore Portal",
+                explanation: "The Veeam Enterprise Manager Self-Service File Restore Portal allows users, such as developers, to independently restore files from their VM backups without requiring direct intervention from the backup team, reducing the workload on the backup team. Reference: Veeam Enterprise Manager User Guide"
+            },
+            {
+                question: "A business has several remote sites that are backed up to the central Veeam infrastructure. After a few months, the amount of data has grown and backup copy jobs do not fit into the backup window. The current bandwidth is 20 Mbps. Management wants to avoid any additional investments. Which option would improve backup duration?",
+                options: [
+                    "Add more RAM to central VBR Server",
+                    "Increase bandwidth to remote sites",
+                    "Upgrade all remote instances to V12",
+                    "Deploy WAN accelerators for remote sites"
+                ],
+                answer: "Deploy WAN accelerators for remote sites",
+                explanation: "Deploying WAN accelerators at both the central and remote sites optimizes data transfer over limited bandwidth connections by performing deduplication and caching, significantly reducing the amount of data transferred and improving backup duration. Reference: Veeam Backup & Replication User Guide, Veeam WAN Accelerator Guide"
+            },
+            {
+                question: "A Windows Server using the ReFS filesystem has been used as a standalone Veeam repository for several years and is due for replacement. A new Windows server using the ReFS filesystem has been created to replace the old server, with twice the capacity. Backup files need to be transferred to the new server with no disruptions to the existing backup chains. The Veeam engineer has begun to move backup files to the new repository but is now getting alerts that it is running out of space. How could the engineer have avoided this issue?",
+                options: [
+                    "Use a Backup Copy Job",
+                    "Use the 'Copy backup...' function",
+                    "Use the 'Move backup...' function",
+                    "Use Robocopy with the /compress switch"
+                ],
+                answer: "Use the 'Move backup...' function",
+                explanation: "The 'Move backup...' function in Veeam Backup & Replication relocates backup files to a new repository without duplicating data, preserving space and maintaining the backup chain integrity. Using a simple copy function would require temporary space for the copied data. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "Veeam is being used to back up a Microsoft SQL VM with transaction logs being backed up every 30 minutes to a local repository. Business requirements dictate that the database backup and all logs also be stored on a secondary, standalone repository in the DR datacenter. What should the Veeam engineer configure to meet the requirements?",
+                options: [
+                    "Backup Copy Job in Periodic Copy mode",
+                    "SOBR with Copy mode enabled",
+                    "Backup Copy Job using the SQL Transaction Log Job as the source",
+                    "Backup Copy Job in Immediate mode"
+                ],
+                answer: "Backup Copy Job using the SQL Transaction Log Job as the source",
+                explanation: "To ensure both VM backups and transaction logs are copied to a secondary location, a Backup Copy Job should be configured. Setting the SQL Transaction Log Job as the source ensures that log backups are included in the copy process to the DR repository. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "What feature is only available with the Veeam Agent for Linux?",
+                options: [
+                    "File-level backup",
+                    "Application-aware processing",
+                    "Backup from native snapshots",
+                    "Volume backup"
+                ],
+                answer: "Backup from native snapshots",
+                explanation: "Backup from native snapshots (like LVM or Btrfs) is a feature unique to Veeam Agent for Linux, allowing for consistent backups leveraging the Linux kernel's snapshot capabilities. Reference: Veeam Agent for Linux User Guide"
             },
              {
-                question: "To solve a space issue while enabling GFS retention, after adding a NAS repository to SOBR as Performance Tier, which option should the engineer choose?",
+                question: "For which workload can Veeam Data Platform achieve image-level backups?",
                 options: [
-                    "Add an Object Storage as Capacity tier and set the policy to copy backups to object storage as soon as they are created",
-                    "Add another NAS repository as Capacity tier and set the policy to move backups older than 14 days",
-                    "Add an Object Storage as Archive tier and set the policy to move all GFS backups",
-                    "Add an Object Storage as Capacity tier and set the policy to move backups older than 14 days"
+                    "AS/400",
+                    "Solaris",
+                    "IOS",
+                    "IHP-UX"
                 ],
-                answer: "Add an Object Storage as Capacity tier and set the policy to move backups older than 14 days",
-                explanation: "Adding Object Storage as a Capacity tier to the SOBR allows moving older backups (older than 14 days in this scenario) off the local NAS, freeing up space for daily backups while leveraging cost-effective object storage for long-term GFS retention."
+                answer: "Solaris",
+                explanation: "Veeam Data Platform supports image-level backups for Solaris workloads, capturing the entire system state including OS, applications, and data. Reference: Veeam Data Platform Documentation, Veeam Solaris Backup Guide"
+            },
+            {
+                question: "A Veeam administrator is creating a protection group that needs to back up all servers for the accounting department using Veeam Agent for Microsoft Windows. New accounting servers must be automatically added to the protection group. How is this accomplished?",
+                options: [
+                    "Create an Active Directory based protection group targeted at an Active Directory security group.",
+                    "Install a configuration file on each of the accounting servers that adds it to the protection group.",
+                    "Create a protection group and set it to automatically scan every three hours for new servers.",
+                    "Create a protection group that reads a CSV file listing the accounting servers."
+                ],
+                answer: "Create an Active Directory based protection group targeted at an Active Directory security group.",
+                explanation: "Using an Active Directory based protection group linked to an AD security group ensures that new servers added to that group are automatically included in the backup routine during periodic rescans. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "An administrator is asked to change a backup copy job from periodic mode to immediate mode. How can this be accomplished?",
+                options: [
+                    "Enable immediate in the backup copy job settings drop down.",
+                    "Right click on the job name and choose immediate.",
+                    "Copy the original backup copy job to a different folder and remap the job.",
+                    "Create a new backup copy job and delete the original job."
+                ],
+                answer: "Create a new backup copy job and delete the original job.",
+                explanation: "Veeam Backup & Replication does not allow changing the mode of an existing backup copy job. The recommended approach is to create a new job with the desired mode (immediate) and then delete the old one. Reference: Veeam Backup & Replication User Guide"
+            },
+            {
+                question: "A planned failover of three VMs has just completed successfully, starting the VMs at the disaster recovery location. What next actions are available for the failover plan?",
+                options: [
+                    "Undo, Start, Edit, Delete",
+                    "Undo, Start, Copy, Delete",
+                    "Cancel. Start, Edit, Delete",
+                    "Cancel, Start, Copy, Delete"
+                ],
+                answer: "Undo, Start, Edit, Delete",
+                explanation: "After a planned failover, the available actions for the failover plan typically include Undo (reverse failover), Start (run again), Edit (modify), and Delete (remove the plan). Copy and Cancel are not typical post-failover actions. Reference: Veeam Backup & Replication User Guide"
             },
              {
-                question: "What is the purpose of a Cache Repository when adding the file share?",
+                question: "Which transport mode will be used by default to restore VMware thick provisioned VMs when physical proxies used for restoration have access to the Fibre Channel datastores used by VMware?",
                 options: [
-                    "To walk the file shares and move data to the backup repository",
-                    "To control how fast the backup proxy can read data from the source file share",
-                    "To make sure backup retention is being managed correctly",
-                    "To store temporary metadata and track all objects that have changed"
+                    "Network mode",
+                    "Virtual appliance",
+                    "Quick Migration",
+                    "Direct Storage Access"
                 ],
-                answer: "To store temporary metadata and track all objects that have changed",
-                explanation: "The Cache Repository stores metadata about the file share, including change logs, which is crucial for efficient incremental backups by tracking changes since the last backup."
+                answer: "Direct Storage Access",
+                explanation: "When physical proxies have direct access to Fibre Channel datastores, Direct Storage Access is the most efficient transport mode for restoring VMware VMs, bypassing the network and reducing load on ESXi hosts. Reference: Veeam Backup & Replication User Guide, Veeam VMware Backup Proxy Guide"
+            },
+            {
+                question: "A director in a business needs a folder of traffic photos restored from a Linux server. This machine sits on a VM backed up by Veeam Backup & Replication. The director wants the files restored to their original location and does not want to lose the original files. What functionality will be used to restore the folder using the Veeam Guest OS restoration wizard?",
+                options: [
+                    "Restore the files using the \"Versioning\" function. Files will be prefixed with numbers (1-, 2-, 3-, etc.).",
+                    "Restore the files using the \"Overwrite\" function. Original files will be renamed.",
+                    "Restore the files using the \"Hold\" function. The director can then determine the status of the original and restored files.",
+                    "Restore the files using the \"Keep\" function. Original files will be untouched"
+                ],
+                answer: "Restore the files using the \"Keep\" function. Original files will be untouched",
+                explanation: "The 'Keep' function in the Veeam Guest File Restore wizard for Linux allows restoring files to their original location without overwriting existing files, preserving the original files. Reference: Veeam Backup & Replication User Guide"
             },
              {
-                question: "A daily backup job for seven Hyper-V VMs keeps 14 days of backups. A copy is needed at a DR site, keeping six months of backups, restorable to any day within two months and any week within six months. How should a backup copy job be configured?",
+                question: "15 VMs are running on a Hyper-V platform and five physical servers at a remote office (ROBO). The administrator has been tasked with setting up centralized off-site backups at the headquarters (HQ). The available bandwidth is 50 Mbps. RPO is set to six hours and the data generated for the interval is 500 GB. WAN accelerators can be added if necessary. Which of the following will achieve the RPO?",
                 options: [
-                    "Use periodic copy (pruning) mode, keeping 62 days of retention and six monthly GFS restore points.",
-                    "Use immediate copy (mirroring) mode, keeping 180 days of retention.",
-                    "Use periodic copy (pruning) mode, keeping 180 days of retention.",
-                    "Use immediate copy (mirroring) mode, keeping 62 days of retention and 26 weekly GFS restore points."
+                    "Use backup copy jobs in with High-Performance Mode enabled. Set the schedule to run every six hours.",
+                    "Use backup copy jobs with copy mode set to \"immediate copy\". Use WAN acceleration.",
+                    "Use backup copy jobs with copy mode set to \"periodic copy\" and copy every six hours.",
+                    "Configure the backup copy jobs with traffic throttling to 30 Mbps to limit the impact. Enable WAN acceleration."
                 ],
-                 // Note: The original document for this question in certsdeals-veeam-vmce-v12-exam-dumps-by-lambert-15-04-2024-10qa.pdf says A is correct, but the explanation points to B. The sample-questions-for-veeam-vmce-v12-exam-by-price.pdf and veeam-vmce-v12-dumps-by-copeland-24-01-2024-10qa-certscare.pdf also have this question and say A is correct with the same explanation. The Veeam Certified Engineer v12 VMCE_v12 Dumps.pdf has a similar question (Q6) and says B is correct with a detailed explanation supporting GFS for weekly/monthly retention. Given the requirement for weekly retention within the six months, option B which explicitly mentions 26 weekly GFS restore points seems more accurate to the requirement than option A which only mentions monthly GFS. I will use B as the correct answer and adapt the explanation slightly to fit the question's specifics regarding daily/weekly restore points. Let's re-evaluate the question and options carefully. The requirement is daily within 2 months (approx 60 days) and weekly within 6 months (approx 26 weeks).
-                 // Option A: periodic copy (pruning) mode, keeping 62 days of retention and six monthly GFS. This meets daily for 62 days and monthly GFS, but not *weekly* within 6 months.
-                 // Option B: immediate copy (mirroring) mode, keeping 62 days of retention and 26 weekly GFS restore points. This meets daily for 62 days and *weekly* for 26 weeks (approx 6 months). Immediate copy mode is also suitable for transferring backups as soon as they are created.
-                 // Option C: periodic copy (pruning) mode, keeping 180 days of retention. This meets daily for ~6 months but no specific weekly/monthly GFS points mentioned.
-                 // Option D: immediate copy (mirroring) mode, keeping 62 days of retention and 26 weekly GFS restore points. This is the same as B.
-                 // It seems there might be conflicting answers/explanations across the documents. Based on the requirement for *weekly* restore points within 6 months, option B/D is the most fitting as it explicitly mentions weekly GFS. I will use B as the correct answer and explanation.
-                answer: "Use immediate copy (mirroring) mode, keeping 62 days of retention and 26 weekly GFS restore points.",
-                explanation: "To meet the requirements of daily restore points for two months (62 days) and weekly restore points for six months (26 weeks), the immediate copy mode with 62 days retention and 26 weekly GFS restore points is the correct configuration. Immediate copy ensures backups are copied promptly, and GFS handles the long-term weekly retention."
+                answer: "Use backup copy jobs with copy mode set to \"immediate copy\". Use WAN acceleration.",
+                explanation: "To meet a 6-hour RPO with limited bandwidth and significant data change, using immediate copy mode with WAN acceleration is the most effective approach. WAN acceleration optimizes data transfer over the WAN, reducing the data volume and speeding up the process. Reference: Veeam Backup & Replication User Guide, Veeam WAN Accelerator Guide"
+            },
+            {
+                question: "A file on a Windows VM hosted on vSphere is corrupted and must be restored. VMware tools are installed and up to date on the VM. For some reason, the Veeam mount server cannot connect to the VM through the network. Which of the following restore methods provides the fastest restore (RTO)?",
+                options: [
+                    "Run Veeam file restore wizard and let it restore through VIX.",
+                    "Start an Instant VM Recovery session and log on into the restored image to copy/paste the file to restore.",
+                    "It is impossible to restore the file on the VM if the mount server cannot reach it through the network.",
+                    "Run Veeam file restore wizard and use the \"copy to\" to download the file locally in a shared folder."
+                ],
+                answer: "Run Veeam file restore wizard and let it restore through VIX.",
+                explanation: "If the Veeam mount server cannot connect via the network, using the Veeam file restore wizard with VIX (VMware API) provides an alternative method to access the VM guest OS and restore files directly, offering the fastest RTO compared to other options. Reference: Veeam Backup & Replication User Guide"
+            },
+             {
+                question: "In the war against ransomware, a company decided to implement tape backup. The infrastructure contains Hyper-V VMs. What is the correct approach to getting all servers onto tape?",
+                options: [
+                    "Create media pools, then create file to tape jobs.",
+                    "Create media sets, then create backup to tape jobs.",
+                    "Create media sets, then create file to tape jobs.",
+                    "Create media pools, then create backup to tape jobs."
+                ],
+                answer: "Create media pools, then create backup to tape jobs.",
+                explanation: "The correct process for backing up Hyper-V VMs to tape involves first creating media pools to manage the tape media and then configuring backup to tape jobs to send VM backups to those media pools. Reference: Veeam Backup & Replication User Guide, Veeam Tape Backup Configuration Guide"
+            },
+             {
+                question: "Veeam Backup and Replication is currently configured with backup jobs that are targeting a local Backup Repository on a Windows Server. The backups are now configured to run periodically every 6 hours. The engineer wants to create a secondary copy of the backups. However, due to bandwidth and compute restrictions, the copies must be created and transferred only once a day. Which option should the engineer choose to achieve this goal?",
+                options: [
+                    "Configure a Hardened Linux Repository, create a Backup Copy job with Periodic Copy (Pruning) mode to this repository and schedule it to run once a day",
+                    "Add the repository to a Scale-Out Backup repository, extend it with a Public Cloud Object Storage as Capacity tier in copy and move mode, and set the operational restore window to 7 days",
+                    "Find a Service Provider with Offsite Backup services, create a Backup Copy job with Immediate Copy (Mirroring) mode to the Service Provider repository",
+                    "Add the repository to a Scale-Out Backup repository, extend it with a Public Cloud Object Storage as Capacity tier in copy mode"
+                ],
+                answer: "Configure a Hardened Linux Repository, create a Backup Copy job with Periodic Copy (Pruning) mode to this repository and schedule it to run once a day",
+                explanation: "To create a secondary copy once a day with bandwidth/compute restrictions, configuring a Hardened Linux Repository and using a Backup Copy job in Periodic Copy mode scheduled daily is appropriate. This allows control over when the copy process runs. Reference: Veeam Backup & Replication User Guide, Veeam Backup Copy Job Configuration Guide"
             }
         ];
 
+        // Function to shuffle an array (Fisher-Yates Algorithm)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+            return array;
+        }
+
+        let questions = []; // Array for the current game's shuffled questions
         let currentQuestionIndex = 0;
         let score = 0;
         let answered = false; // Flag to prevent multiple clicks on options
@@ -318,6 +498,8 @@
         function startGame() {
             score = 0;
             currentQuestionIndex = 0;
+            // Shuffle all questions at the start of a new game
+            questions = shuffleArray([...allQuestions]); // Create a shuffled copy
             scoreDisplay.textContent = `Score: ${score}`;
             startScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
@@ -336,8 +518,8 @@
             questionCounterDisplay.textContent = `Question ${currentQuestionIndex + 1}/${questions.length}`;
             updateProgressBar();
 
-            // Shuffle options
-            const shuffledOptions = q.options.sort(() => Math.random() - 0.5);
+            // Shuffle options for the current question
+            const shuffledOptions = shuffleArray([...q.options]); // Create a shuffled copy of options
 
             shuffledOptions.forEach(option => {
                 const button = document.createElement('button');
@@ -356,38 +538,19 @@
             const optionButtons = optionsArea.querySelectorAll('.option-button');
             let isCorrect = false;
 
-            // Handle single or multiple correct answers
+            // Determine if the selected option is correct
             if (Array.isArray(correctAnswer)) {
-                // For questions with multiple correct answers, check if selected option is one of them
-                 // This game structure is designed for single-choice. If a multi-choice question is included,
-                 // the logic here needs to be adapted to allow selecting multiple options and submitting.
-                 // For simplicity in this single-choice game, I will assume the multi-choice question
-                 // is presented as a single-choice where only one *best* option needs to be selected
-                 // from the provided choices, or I need to rephrase it to fit single choice.
-                 // Let's re-evaluate Question 7. It asks to choose *two* settings. The current game structure
-                 // is single-choice. I will rephrase the question to ask for *one* of the settings or
-                 // adapt the game to handle multi-choice. Adapting the game is more complex.
-                 // Let's rephrase Question 7 to ask for ONE of the settings that helps meet the RPO.
-                 // Rephrased Q7: "A Microsoft SQL server in a VMware VM is sensitive to snapshots (only once per day at 3 AM). The RPO for databases is 1 hour. Which of the following Application-Aware Processing Settings helps meet the 1-hour RPO?"
-                 // Options will remain the same, but only one will be marked as correct for game logic.
-                 // I will pick one of the original correct answers (e.g., "SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Back up logs periodically") as the single correct answer for game purposes.
-                 // This is a compromise due to the single-choice game structure.
-                 // Let's stick to single-choice questions for now to keep the game simple as requested.
-                 // I will revert Q7 to a single correct answer based on the original documents' primary focus or rephrase it.
-                 // Looking at the explanation for Q7 in actualtestdumps-vmce-v12...8qa.pdf, it says "enable regular transaction log backups (option A) and process transaction logs with the job (option E)". Both are presented as equally important.
-                 // To fit the single-choice format, I will rephrase Q7 to ask about *a* setting that helps, and pick one of the two original correct options as the single correct answer for the game. I'll pick Option A as the correct answer for the game.
-
-                 // Re-handling the check assuming single-choice structure:
-                 if (selectedOption === correctAnswer) {
+                 // If the question has multiple correct answers, check if the selected option is one of them.
+                 // Note: The current game UI is single-choice. This logic assumes that for multi-answer
+                 // questions, selecting *any* of the correct options counts as correct.
+                 if (correctAnswer.includes(selectedOption)) {
                     isCorrect = true;
                  }
-
             } else { // Single correct answer
                 if (selectedOption === correctAnswer) {
                     isCorrect = true;
                 }
             }
-
 
             optionButtons.forEach(button => {
                 // Disable all buttons after an answer is selected
@@ -395,7 +558,11 @@
 
                 // Highlight correct and incorrect answers
                 if (Array.isArray(correctAnswer)) {
-                     // This part is not needed if we stick to single-choice.
+                    if (correctAnswer.includes(button.textContent)) {
+                         button.classList.add('correct'); // Highlight all correct answers
+                    } else if (button.textContent === selectedOption && !isCorrect) {
+                         button.classList.add('incorrect'); // Highlight selected incorrect answer
+                    }
                 } else {
                     if (button.textContent === correctAnswer) {
                         button.classList.add('correct');
@@ -403,13 +570,6 @@
                         button.classList.add('incorrect');
                     }
                 }
-                 // Re-applying highlighting for single-choice:
-                 if (button.textContent === correctAnswer) {
-                     button.classList.add('correct');
-                 } else if (button.textContent === selectedOption) {
-                     button.classList.add('incorrect');
-                 }
-
             });
 
             // Show feedback
@@ -454,7 +614,7 @@
             let message = "";
             if (score === questions.length) {
                 message = "Incredible! You have mastered the challenges and proven yourself a true Data Guardian. The digital realm is safe thanks to your expertise!";
-            } else if (score >= questions.length / 2) {
+            } else if (score >= questions.length * 0.7) { // Higher threshold for 'well done' with more questions
                 message = "Well done! You've shown solid knowledge and are well on your way to becoming a Data Guardian. Keep practicing!";
             } else {
                 message = "You faced the challenges bravely. Review the explanations for the questions you missed and try again to strengthen your skills!";
