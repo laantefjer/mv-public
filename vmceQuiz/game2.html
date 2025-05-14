@@ -50,52 +50,45 @@
       border-radius: 5px;
       cursor: pointer;
     }
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
   <h1>🛡️ VeeamQuest: by M 🛡️</h1>
   <h2 id="stage"></h2>
   <div class="question">
+    <div id="loading" class="loading">Loading questions...</div>
     <p id="question-text"></p>
     <div class="options"></div>
     <div class="feedback" id="feedback"></div>
     <button class="next" id="nextBtn" onclick="nextQuestion()">Next ➡️</button>
   </div>
   <script>
-    const questions = [
-      {
-        "stage": "Question 1",
-        "question": "Which API is available to automate Veeam Backup and Replication operations?",
-        "options": [
-          "A. ",
-          "B. ",
-          "C. ",
-          "D. "
-        ],
-        "correct": [
-          "A"
-        ],
-        "explanation": "The REST API through Veeam Backup and Replication Server is the available API for automating Veeam Backup and Replication operations. This API enables programmatic control over Veeam Backup & Replication and allows for integration with external systems and custom automation scripts. Reference: Veeam Backup & Replication RESTful API Reference, Veeam Automation and Scripting Guide"
-      },
-      {
-        "stage": "Question 2",
-        "question": "An administrator needs to create a strategy in advance of a disaster to ensure that applications can be started in a specific order. How can this be accomplished?",
-        "options": [
-          "A. ",
-          "B. ",
-          "C. ",
-          "D. "
-        ],
-        "correct": [
-          "A"
-        ],
-        "explanation": "To ensure that applications can be started in a specific order in advance of a disaster, an administrator should use a Failover Plan in Veeam Backup and Replication. This feature allows for the creation of a predefined sequence for starting up VMs, ensuring that applications are brought online in the correct order during a disaster recovery scenario. Reference: Veeam Backup & Replication User Guide, Veeam Failover Plan Configuration Guide"
-      },
-      // ... (all other questions from vmce_questions.json) ...
-    ];
-
+    let questions = [];
     let currentQuestionIndex = null;
     let usedIndexes = [];
+
+    // Load questions from JSON file
+    fetch('vmce_questions.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        questions = data;
+        document.getElementById('loading').style.display = 'none';
+        nextQuestion();
+      })
+      .catch(error => {
+        console.error('Error loading questions:', error);
+        document.getElementById('loading').textContent = 'Error loading questions. Please refresh the page.';
+      });
 
     function getRandomQuestionIndex() {
       if (usedIndexes.length === questions.length) {
@@ -143,9 +136,6 @@
       currentQuestionIndex = getRandomQuestionIndex();
       showQuestion(currentQuestionIndex);
     }
-
-    // Start game with a random question
-    nextQuestion();
   </script>
 </body>
 </html>
