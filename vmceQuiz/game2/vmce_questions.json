@@ -1,0 +1,286 @@
+[
+  {
+    "stage": "Question 1",
+    "question": "Which API is available to automate Veeam Backup and Replication operations?",
+    "options": [
+      "A- REST API through Veeam One server",
+      "B- REST API through Veeam Backup and Replication Server",
+      "C- SQL queries on the Veeam Backup and Replication database",
+      "D- Powershell cmdlets through Veeam Enterprise Manager Server"
+    ],
+    "correct": [
+      "B"
+    ],
+    "explanation": "The REST API through Veeam Backup and Replication Server is the available API for automating Veeam Backup and Replication operations. This API enables programmatic control over Veeam Backup & Replication and allows for integration with external systems and custom automation scripts. Reference: Veeam Backup & Replication RESTful API Reference, Veeam Automation and Scripting Guide"
+  },
+  {
+    "stage": "Question 2",
+    "question": "An administrator needs to create a strategy in advance of a disaster to ensure that applications can be started in a specific order. How can this be accomplished?",
+    "options": [
+      "A- Attach XML file to existing job with the VM start order",
+      "B- Application group",
+      "C- Failover plan",
+      "D- Veeam ONE migration script"
+    ],
+    "correct": [
+      "C"
+    ],
+    "explanation": "To ensure that applications can be started in a specific order in advance of a disaster, an administrator should use a Failover Plan in Veeam Backup and Replication. This feature allows for the creation of a predefined sequence for starting up VMs, ensuring that applications are brought online in the correct order during a disaster recovery scenario. Reference: Veeam Backup & Replication User Guide, Veeam Failover Plan Configuration Guide"
+  },
+  {
+    "stage": "Question 3",
+    "question": "A Microsoft SQL server is running in a VMware VM. The VM is very sensitive to snapshots, and can only be snapshotted once per day at 3 AM. However, the RPO for the databases running inside the VM is 1 hour. Which two Application-Aware Processing Settings should be selected in the backup job so that the 1 hour RPO for the databases is met? (Choose two.)",
+    "options": [
+      "A- SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Back up logs periodically",
+      "B- SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Do not truncate logs",
+      "C- General Tab: VSS Settings: Perform copy only",
+      "D- SQL Tab: Choose how this job should process Microsoft SQL Server Transaction Logs: Truncate Logs",
+      "E- General Tab: VSS Settings: Process transaction logs with this job"
+    ],
+    "correct": [
+      "A",
+      "E"
+    ],
+    "explanation": "To meet the 1-hour RPO for the databases within the VM, while only being able to snapshot the VM once per day, the best strategy is to enable regular transaction log backups (option A) and process transaction logs with the job (option E). This setup allows the system to capture changes in the SQL Server transaction logs at intervals less than the RPO requirement, without needing to snapshot the entire VM more frequently. Reference: Veeam Backup & Replication Documentation, Veeam Backup & Replication Best Practices Guide"
+  },
+  {
+    "stage": "Question 4",
+    "question": "To be able to increase backup retention, the company has bought a Data Domain deduplication appliance. After setting up the jobs to use it, the backup administrator observes an increase of resource consumption on the backup server. The proxy configuration has not been modified. What is causing the issue?",
+    "options": [
+      "A- The backup appliance does not have enough resources to process the data",
+      "B- The SSL certificate on the backup appliance needs to be updated",
+      "C- The backup server has to fulfill the gateway role",
+      "D- The backup server needs additional resources to use a deduplication appliance"
+    ],
+    "correct": [
+      "C"
+    ],
+    "explanation": "When integrating a Data Domain deduplication appliance with Veeam Backup & Replication, it is typically used as a backup repository. The backup server may need to take on the gateway role, especially if the Data Domain is integrated over NFS or CIFS. This means that the backup server will be responsible for processing the data flow between the Veeam proxies and the deduplication appliance. If the gateway server (backup server) is not well-resourced, this additional workload can cause an increase in resource consumption on the backup server. The appliance's resources and the SSL certificate are not related to increased resource consumption on the backup server, and simply needing additional resources for deduplication (D) is not specific enough without indicating the gateway role."
+  },
+  {
+    "stage": "Question 5",
+    "question": "Veeam Backup & Replication is currently configured to keep backups for 14 days on a NAS repository. An engineer needs to enable GFS with 12 monthly and 5 yearly full backups to extend the retention for archival purposes but does not have enough space on the repository to store them. After adding the repository to Scale-Out-Backup Repository (SOBR) as Performance Tier, which option should the engineer choose to solve this issue?",
+    "options": [
+      "A- Add an Object Storage as Capacity tier and set the policy to copy backups to object storage as soon as they are created",
+      "B- Add another NAS repository as Capacity tier and set the policy to move backups older than 14 days",
+      "C- Add an Object Storage as Archive tier and set the policy to move all GFS backups",
+      "D- Add an Object Storage as Capacity tier and set the policy to move backups older than 14 days"
+    ],
+    "correct": [
+      "D"
+    ],
+    "explanation": "To solve the space issue while enabling GFS retention, the engineer should add an Object Storage as a Capacity tier to the Scale-Out Backup Repository (SOBR) and set the policy to move backups that are older than 14 days. This approach allows for efficient use of local NAS storage for short-term retention and leverages object storage for long-term archival purposes. Reference: Veeam Backup & Replication User Guide, Veeam SOBR Configuration Guide"
+  },
+  {
+    "stage": "Question 6",
+    "question": "The administrator of a VMware environment backed up by Veeam Backup & Replication has a critical server that has crashed and will not reboot. They were able to bring it back online quickly using Instant VM Recovery so people could continue to work. What else is required to complete the recovery?",
+    "options": [
+      "A- Migrate to production",
+      "B- Commit failover",
+      "C- Commit tailback",
+      "D- Merge delta file"
+    ],
+    "correct": [
+      "A"
+    ],
+    "explanation": "After using Instant VM Recovery to bring a critical crashed server back online quickly, the final step required to complete the recovery process is A: Migrate to production. Instant VM Recovery allows a VM to run directly from the backup file in a temporary location, enabling rapid recovery and minimal downtime. However, because the VM is running in this provisional state, it's essential to migrate it back to the production environment to ensure long-term stability and performance. The 'Migrate to production' operation involves moving the running VM from the backup storage to the production storage, typically involving a storage vMotion in VMware environments or a similar process in other hypervisors. This step ensures that the VM is fully restored to its original or a new production environment, solidifying the recovery and allowing the VM to operate as part of the normal infrastructure once again."
+  },
+  {
+    "stage": "Question 7",
+    "question": "An administrator needs to configure a backup job that dynamically adds new VMware hosted SQL servers. How can this be accomplished?",
+    "options": [
+      "A- Create a job based on vSphere tags",
+      "B- Enable application aware processing",
+      "C- Create a CSV file that is scanned before the backup job starts",
+      "D- Create a dynamic backup job in Enterprise Manager"
+    ],
+    "correct": [
+      "A"
+    ],
+    "explanation": "Creating a backup job based on vSphere tags allows for dynamic addition of new VMware hosted SQL servers. When new VMs are tagged appropriately in vSphere, they are automatically included in the backup job, ensuring all relevant SQL servers are backed up without manual intervention. Reference: Veeam Backup & Replication User Guide, Veeam Dynamic Backup Job Configuration Guide"
+  },
+  {
+    "stage": "Question 8",
+    "question": "A physical Windows server protected by a centrally managed Veeam agent is physically damaged. A Hyper-V infrastructure is available, and the physical server is eligible for virtualization. Which recovery step provides the lowest possible RTO?",
+    "options": [
+      "A- Use Instant VM Recovery to Hyper-V",
+      "B- Use Instant Disk Recovery to Hyper-V",
+      "C- Use Bare Metal Restore to Hyper-VVMs",
+      "D- Use Export Disk Content as Virtual Disk to create a new VM"
+    ],
+    "correct": [
+      "A"
+    ],
+    "explanation": "Instant VM Recovery is a feature in Veeam that allows you to start a virtual machine directly from a backup file without waiting for the full restore. Using Instant VM Recovery to Hyper-V is the best option for achieving the lowest possible Recovery Time Objective (RTO) because it allows the damaged physical server's backup to be run as a VM in the Hyper-V environment almost immediately. The Veeam Agent for Microsoft Windows supports Instant Recovery to a Hyper-V VM, which will enable you to restore service quickly while you can plan for a more permanent recovery solution."
+  },
+  {
+    "stage": "Question 9",
+    "question": "A backup administrator is called in to review a new Veeam deployment created by a coworker. The backup administrator takes the following notes: * 12 backup jobs * 1 SOBR configured with AWS S3 Performance Tier * 1 Repository configured on Hardened Immutable Repository The administrator also notes that six jobs are configured to use the SOBR and six jobs are configured to use the Hardened Immutable Repository. What should the backup administrator report to the other coworker regarding the 3-2-1 backup strategy?",
+    "options": [
+      "A- This will save costs with the Archive Tier in the SOBR",
+      "B- This needs the Hardened Immutable Repository added to the capacity tier",
+      "C- This only has 1 copy of the backup data",
+      "D- This meets the 3-2-1 best practices requirements"
+    ],
+    "correct": [
+      "C"
+    ],
+    "explanation": "The 3-2-1 backup strategy is a best practice that suggests having three total copies of your data, two of which are local but on different devices or media, and one copy offsite. In the described scenario, although there is an offsite component (SOBR with AWS S3 Performance Tier), and a local hardened immutable repository, there is no indication of a second local copy on a different device or media. This means that there is only one local copy of the backup data and one offsite copy. Therefore, the setup does not meet the 3-2-1 best practices requirement, which would involve having at least one more local copy on different media or device."
+  },
+  {
+    "stage": "Question 10",
+    "question": "A company's infrastructure includes a Fibre Channel SAN where the VMware VMs are located. The administrator wants to create a backup that minimizes the impact on the production environment. What proxy transport mode should be used?",
+    "options": [
+      "A- Network",
+      "B- Guest interaction",
+      "C- Direct storage access",
+      "D- Virtual appliance"
+    ],
+    "correct": [
+      "C"
+    ],
+    "explanation": "For a VMware environment on a Fibre Channel SAN, the most efficient proxy transport mode to minimize impact on the production environment is Direct Storage Access. This mode allows the backup proxy to directly interact with the SAN, bypassing the production network and reducing load on the ESXi hosts. Reference: Veeam Backup & Replication Best Practices, Veeam VMware Backup Proxy Guide"
+  },
+  {
+    "stage": "Question 11",
+    "question": "A customer wants to start an on-demand lab from backup files for several mission critical VMs. What SureBackup feature should be configured to identify the necessary VMs?",
+    "options": [
+      "A- Application Group",
+      "B- Virtual Lab",
+      "C- Staged Restore",
+      "D- Secure Restore"
+    ],
+    "correct": [
+      "A"
+    ],
+    "explanation": "When starting an on-demand lab from backup files for mission-critical VMs, the appropriate SureBackup feature to configure is A: Application Group. An Application Group in Veeam Backup & Replication is a predefined group of VMs that are started together in the SureBackup job. This feature is designed to ensure that interdependent VMs, such as those comprising a multi-tier application, are started in a sequence that respects their operational dependencies, allowing for comprehensive verification and testing. The Application Group can include the mission-critical VMs and any associated VMs required for the application environment to function correctly, ensuring that all components are available and interact as expected within the isolated on-demand lab environment. This setup facilitates effective testing or troubleshooting in a manner that closely mirrors the production environment without impacting live operations."
+  },
+  {
+    "stage": "Question 12",
+    "question": "To be able to increase backup retention, the company has bought a Data Domain deduplication appliance. After setting up the jobs to use it, the backup administrator observes an increase of resource consumption on the backup server. The proxy configuration has not been modified. What is causing the issue?",
+    "options": [
+      "A- The backup appliance does not have enough resources to process the data",
+      "B- The SSL certificate on the backup appliance needs to be updated",
+      "C- The backup server has to fulfill the gateway role",
+      "D- The backup server needs additional resources to use a deduplication appliance"
+    ],
+    "correct": [
+      "C"
+    ],
+    "explanation": "When integrating a Data Domain deduplication appliance with Veeam Backup & Replication, it is typically used as a backup repository. The backup server may need to take on the gateway role, especially if the Data Domain is integrated over NFS or CIFS. This means that the backup server will be responsible for processing the data flow between the Veeam proxies and the deduplication appliance. If the gateway server (backup server) is not well-resourced, this additional workload can cause an increase in resource consumption on the backup server. The appliance's resources and the SSL certificate are not related to increased resource consumption on the backup server, and simply needing additional resources for deduplication (D) is not specific enough without indicating the gateway role."
+  },
+  {
+    "stage": "Question 13",
+    "question": "Which Veeam replication failover function ensures that changes made during a failover are copied to the original production VM?",
+    "options": [
+      "A- Fallback",
+      "B- Permanent failover",
+      "C- Undo failover",
+      "D- Undo fallback"
+    ],
+    "correct": [
+      "A"
+    ],
+    "explanation": "In Veeam replication, the function that ensures changes made during a failover are copied back to the original production VM is Fallback. This process involves reversing the replication direction after a failover, ensuring that any changes made while running on the replica are synchronized back to the original VM. Reference: Veeam Backup & Replication User Guide, Veeam Replication Fallback Guide"
+  },
+  {
+    "stage": "Question 14",
+    "question": "An infrastructure with 50 VMs has a power outage. After the VMware cluster has booted up again, 10 large VMs are orphaned. However, all VM disk files are still on the datastores. What is the quickest way to bring back those VMs with the least possible data loss?",
+    "options": [
+      "A- Remove the existing VM disk files from the datastore and perform Instant VM Recovery",
+      "B- Perform Instant VM Recovery with quick rollback with automatic Power On VM at the end",
+      "C- Perform Restore VM Files and only restore the VM configuration files",
+      "D- Use the 'Restore guest files' option to restore the VM configuration files"
+    ],
+    "correct": [
+      "C"
+    ],
+    "explanation": "In a situation where VMs are orphaned after a power outage but their disk files remain intact on the datastores, the most efficient way to restore these VMs with minimal data loss is C: Perform Restore VM Files and only restore the VM configuration files. This approach involves using Veeam Backup & Replication to restore only the necessary VMX files (for VMware) or equivalent configuration files for other hypervisors, which contain the settings and configuration of the VMs. Since the disk files are still present and intact on the datastores, restoring the configuration files allows the VMs to be re-registered with the hypervisor and brought back online quickly, without the need to transfer or restore the entire VM disk files, thus minimizing downtime and data loss."
+  },
+  {
+    "stage": "Question 15",
+    "question": "A physical Linux server protected by a centrally managed Veeam agent is physically damaged. A VMware vSphere infrastructure is available, and the physical server is eligible for virtualization. Which recovery step provides the lowest possible RTO?",
+    "options": [
+      "A- Use Instant VM Recovery to VMware",
+      "B- Use Export Disk Content as Virtual Disk to create a new VM",
+      "C- Use Bare Metal Restore to VMware vSphere VM",
+      "D- Use Instant Disk Recovery to VMware vSphere"
+    ],
+    "correct": [
+      "A"
+    ],
+    "explanation": "Instant VM Recovery to VMware offers the lowest possible RTO for restoring a physically damaged Linux server to a VMware vSphere infrastructure. This feature rapidly restores service by running the server directly from the backup file in a VMware environment. Reference: Veeam Backup & Replication User Guide, Veeam Agent for Linux Guide"
+  },
+  {
+    "stage": "Question 16",
+    "question": "Management asks a backup administrator to deploy the Veeam Agent on a number of Amazon EC2 instances running Windows and Linux operating systems. A Veeam Protection Group is also required by management. The Veeam Distribution Server does not have network access to these instances. What protection group type should be used to select these objects?",
+    "options": [
+      "A- Individual computers",
+      "B- Microsoft Active Directory objects",
+      "C- Computers listed in a CSV file",
+      "D- Cloud machines"
+    ],
+    "correct": [
+      "D"
+    ],
+    "explanation": "For deploying the Veeam Agent on Amazon EC2 instances running Windows and Linux operating systems without direct network access from the Veeam Distribution Server, the appropriate type of Protection Group to use is D: Cloud machines. The 'Cloud machines' protection group type in Veeam Backup & Replication is specifically designed for protecting cloud-based workloads, including instances in public cloud environments like Amazon EC2. This protection group type allows the Veeam Agent to be deployed and managed remotely, even when the Veeam Distribution Server cannot directly access the instances over the network. It facilitates centralized management of backup tasks for cloud instances, ensuring that the EC2 instances are adequately protected as per management's request, despite the network accessibility constraints."
+  },
+  {
+    "stage": "Question 17",
+    "question": "A 3-node Microsoft SQL Always On cluster is running in a VMware environment. The RPOs are: * 1 day for the cluster nodes * 15 minutes for the log files How should the cluster be backed up?",
+    "options": [
+      "A- Veeam Backup and Replication - Create a VMware backup job, include the 3 nodes of the cluster. Use Application-Aware Processing to back up the transaction logs every 15 minutes",
+      "B- Veeam Agent for Windows - Create a managed by server backup job for all 3 nodes. Use Application-Aware Processing to back up the database once a day",
+      "C- Veeam Agent for Windows - Create a managed by agent backup policy for all 3 nodes. Use a log shipping server to back up the transaction logs every 15 minutes",
+      "D- Veeam Enterprise Plug-in for Microsoft SQL - Install the Plug-in on each node in cluster. Use Microsoft SQL Server Management Studio to create the backups"
+    ],
+    "correct": [
+      "A"
+    ],
+    "explanation": "For backing up a 3-node Microsoft SQL Always On cluster running in a VMware environment with the specified Recovery Point Objectives (RPOs), the most suitable option is A: Veeam Backup and Replication - Create a VMware backup job, include the 3 nodes of the cluster. Use Application-Aware Processing to back up the transaction logs every 15 minutes. This approach allows for the entire SQL cluster nodes to be backed up as part of a regular VM backup job, which satisfies the 1-day RPO for the cluster nodes. The Application-Aware Processing feature of Veeam Backup & Replication ensures that the SQL databases are in a consistent state during backup. Moreover, this feature allows for the transaction logs to be backed up separately at a more frequent interval, in this case, every 15 minutes, meeting the 15-minute RPO requirement for the log files. This dual approach ensures comprehensive protection for both the SQL cluster nodes and the critical transaction logs, aligning with the specified RPOs."
+  },
+  {
+    "stage": "Question 18",
+    "question": "A daily backup job for seven Hyper-V VMs has been configured at the main site, keeping 14 days' worth of backup files. They want to get a copy of the VM backups to a repository at the disaster recovery site. They want to keep six months' worth of backup files at the disaster recovery site. They also need to be able to restore the VMs to any given day within two months and any given week within the six months. How should a backup copy job be configured to meet these requirements?",
+    "options": [
+      "A- Use periodic copy (pruning) mode, keeping 62 days of retention and six monthly GFS restore points",
+      "B- Use immediate copy (mirroring) mode, keeping 180 days of retention",
+      "C- Use periodic copy (pruning) mode, keeping 180 days of retention",
+      "D- Use immediate copy (mirroring) mode, keeping 62 days of retention and 26 weekly GFS restore points"
+    ],
+    "correct": [
+      "A"
+    ],
+    "explanation": "To meet the specified requirements, configuring a backup copy job in periodic copy (pruning) mode with 62 days of retention and six monthly Grandfather-Father-Son (GFS) restore points is the best approach. This setup allows for daily backups for up to two months and weekly backups for up to six months, aligning with the desired restore capabilities. Reference: Veeam Backup & Replication User Guide, Veeam GFS Retention Policy Explanation"
+  },
+  {
+    "stage": "Question 19",
+    "question": "Which two service offerings can a Veeam Cloud Service Provider provide to Veeam's customers? (Choose two.)",
+    "options": [
+      "A- Backup as a Service",
+      "B- Application Development as a Service Service PP",
+      "C- On premise tape",
+      "D- Physical site security as a Service",
+      "E- Disaster Recovery as a Service"
+    ],
+    "correct": [
+      "A",
+      "E"
+    ],
+    "explanation": "Veeam Cloud Service Providers (VCSPs) are equipped to offer a range of services designed to extend Veeam's data protection capabilities to the cloud, enhancing the flexibility and reliability of backup and disaster recovery strategies for Veeam's customers. The two service offerings that align with VCSP capabilities are: A) Backup as a Service (BaaS) - This service allows Veeam customers to offload their on-premises backup operations to the cloud, leveraging cloud resources for storage and management of backups. BaaS simplifies backup processes, reduces the need for extensive on-premises infrastructure, and provides an added layer of data protection and accessibility. E) Disaster Recovery as a Service (DRaaS) - DRaaS extends beyond basic backup services to offer a more comprehensive disaster recovery solution. It ensures not only the availability of backups but also the capability to rapidly restore and run critical workloads in the cloud in the event of a disaster, minimizing downtime and ensuring business continuity. These services leverage the robust capabilities of Veeam Backup & Replication, tailored for cloud environments, to offer scalable, efficient, and secure data protection solutions."
+  },
+  {
+    "stage": "Question 20",
+    "question": "A company is running nightly backups to satisfy their 24-hour RPO. There are two critical applications that cannot be offline more than 4 hours with no more than an hour of data loss. How can this be accomplished?",
+    "options": [
+      "A- Linux hardened repository with immutability",
+      "B- A local SOBR with AWS Object storage",
+      "C- Backup copy jobs with hourly VM replication",
+      "D- Enable Continuous Backup Replication"
+    ],
+    "correct": [
+      "C"
+    ],
+    "explanation": "To meet the stringent Recovery Time Objective (RTO) of 4 hours and Recovery Point Objective (RPO) of 1 hour for the two critical applications, the most suitable approach is to use a combination of backup copy jobs and hourly VM replication, which corresponds to answer C. Backup copy jobs can ensure that backups are available offsite for disaster recovery purposes, while VM replication provides the ability to quickly failover to a replica VM in case of a primary VM failure, thereby minimizing downtime. Veeam's replication capabilities are designed to create exact copies of VMs at regular intervals, which can then be rapidly activated in case of a failure. This strategy ensures that the applications can be brought back online within the 4-hour RTO, with data loss not exceeding the 1-hour RPO, thus meeting the company's stringent data protection requirements for these critical applications."
+  }
+]

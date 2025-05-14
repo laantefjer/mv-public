@@ -72,7 +72,7 @@
     let currentQuestionIndex = null;
     let usedIndexes = [];
 
-    // Load questions from JSON file
+    // Load questions from JSON file (in the same directory)
     fetch('vmce_questions.json')
       .then(response => {
         if (!response.ok) {
