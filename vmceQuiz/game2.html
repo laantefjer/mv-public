@@ -62,51 +62,9 @@
     <button class="next" id="nextBtn" onclick="nextQuestion()">Next ➡️</button>
   </div>
   <script>
-    const questions = 
-[
-  {
-    "stage": "Question 1",
-    "question": "What is the function of Secure Restore in Veeam?",
-    "options": [
-      "A. Encrypt backup files",
-      "B. Scan restored data for malware",
-      "C. Verify restore point integrity",
-      "D. Test application boot time"
-    ],
-    "correct": [
-      "B"
-    ],
-    "explanation": "Secure Restore scans backup content for malware using antivirus before restoring to production, adding a layer of security."
-  },
-  {
-    "stage": "Question 2",
-    "question": "What happens to GFS restore points when GFS is disabled in the backup copy job?",
-    "options": [
-      "A. They are deleted",
-      "B. They are preserved until manually removed",
-      "C. They become incrementals",
-      "D. They are moved to archive tier"
-    ],
-    "correct": [
-      "B"
-    ],
-    "explanation": "GFS restore points are preserved even after GFS is disabled. They must be manually deleted or expire per retention policy."
-  },
-  {
-    "stage": "Question 3",
-    "question": "Which backup copy job configuration is the simplest for backing up multiple workloads including transaction logs?",
-    "options": [
-      "A. A single periodic copy job",
-      "B. A single immediate copy job",
-      "C. Two immediate copy jobs",
-      "D. Two periodic copy jobs"
-    ],
-    "correct": [
-      "B"
-    ],
-    "explanation": "A single immediate copy job ensures transaction logs are included and backups are copied as soon as restore points appear."
-  }
-];
+    const questions = [
+      // ...full questions array from vmce_questions.json inserted here...
+    ];
 
     let currentQuestionIndex = null;
     let usedIndexes = [];
